@@ -1,0 +1,36 @@
+---
+title: Methods 8
+author: John Dong
+format: pdf
+---
+
+Apologies for the late submission! You can view my repo's commit history [here](https://github.com/johndong1121/methods8) if that helps to verify that this is my own work done independent from the solutions.
+
+# 1. 
+
+$$
+\text{Provided that}: \qquad \bar{Y} (A = 0, B = 0) = 1, \qquad \bar{Y} (A = 1, B = 0) = 5, \qquad
+\bar{Y} (A = 0, B = 1) = 4, \qquad \bar{Y} (A = 1, B = 1) = 7
+$$
+
+> we can hold the following to be true.
+
+$$
+\begin{aligned}
+\bar{Y} (A = 0, B = 0) = \mathbb{E}(Y_i~|~A = 0, B = 0)   \\
+= \mathbb{E}(\beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \beta_3 \cdot 0 + \epsilon_i) \\ 
+= \beta_0 + 0 + 0 + 0 + \mathbb{E}(\epsilon_i) \\ 
+= \beta_0 + 0 = 1\\
+\therefore \beta_0 = 1
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\bar{Y} (A = 1, B = 0) = \mathbb{E}(Y_i~|~A = 1, B = 0)   \\
+= \mathbb{E}(\beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 0 + \beta_3 \cdot 0 + \epsilon_i) \\ 
+= \beta_0 + \beta_1 + 0 + 0 + \mathbb{E}(\epsilon_i) \\ 
+= 1 + \beta_1 + 0 = 5\\
+\therefore \beta_1 = 4
+\end{aligned}
+$$
