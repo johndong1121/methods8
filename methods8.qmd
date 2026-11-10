@@ -8,8 +8,13 @@ Apologies for the late submission! You can view my repo's commit history [here](
 
 # 1. 
 
+## a.
+
 $$
-\text{Provided that}: \qquad \bar{Y} (A = 0, B = 0) = 1, \qquad \bar{Y} (A = 1, B = 0) = 5, \qquad
+\text{Provided that}: \qquad \bar{Y} (A = 0, B = 0) = 1, \qquad \bar{Y} (A = 1, B = 0) = 5,
+$$
+
+$$
 \bar{Y} (A = 0, B = 1) = 4, \qquad \bar{Y} (A = 1, B = 1) = 7
 $$
 
@@ -34,3 +39,26 @@ $$
 \therefore \beta_1 = 4
 \end{aligned}
 $$
+
+$$
+\begin{aligned}
+\bar{Y} (A = 0, B = 1) = \mathbb{E}(Y_i~|~A = 0, B = 1)   \\
+= \mathbb{E}(\beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 1 + \beta_3 \cdot 0 + \epsilon_i) \\ 
+= \beta_0 + 0 + \beta_2 + 0 + \mathbb{E}(\epsilon_i) \\ 
+= 1 + \beta_2 + 0 = 4\\
+\therefore \beta_2 = 3
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\bar{Y} (A = 1, B = 1) = \mathbb{E}(Y_i~|~A = 1, B = 1)   \\
+= \mathbb{E}(\beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 1 + \beta_3 \cdot 1 + \epsilon_i) \\ 
+= \beta_0 + \beta_1 + \beta_2 + \beta_3 + \mathbb{E}(\epsilon_i) \\ 
+= 1 + 4 + 3 + \beta_3 = 7\\
+\therefore \beta_3 = -1
+\end{aligned}
+$$
+
+> **Final Answer**: $\boxed{\beta_0 = 1, \beta_1 = 4, \beta_2 = 3, \beta_3 = -1}$
+
