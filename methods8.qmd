@@ -62,3 +62,17 @@ $$
 
 > **Final Answer**: $\boxed{\beta_0 = 1, \beta_1 = 4, \beta_2 = 3, \beta_3 = -1}$
 
+## b. 
+
+> In order to get estimates for the four regression coefficients, we need estimates for the four averages above. We have two variables, $A$ and $B$, which can take values $0$ or $1$ depending on whether or not the value observed was at a "high" or "low" level for each. $\beta_0$, the intercept or "baseline", necessitates that we have a treatment group where $A = 0, B=0$. Then, by comparing to our baseline, we can get our treatment effects for $A$ and $B$ by changing the level one at a time: one group is $A=1, B=0$, and the other $A = 0, B=1$. This lets us estimate $\beta_1$ and $\beta_2$. We also have to estimate the interaction effect $\beta_3$, so we need treatment group $A = 1, B = 1$. This constructs our full factorial design, where we have $2^2$ treatment groups, one for each combination of treatment levels. Then, our observational units are evenly split among the treatment groups.
+
+> In summary:
+
+| Group | Treatment | Number of units |
+|-----------|-----------|-----------|
+|Group 1| $A = 0, B = 0$ |$n=50$|
+|Group 2| $A = 1, B = 0$ |$n=50$|
+|Group 3| $A = 0, B = 1$ |$n=50$|
+|Group 4| $A = 1, B = 1$ |$n=50$|
+
+
