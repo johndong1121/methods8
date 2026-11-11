@@ -81,5 +81,83 @@ $$
 
 > We need to compare $A = 0,~ B = 0, ~C = 0$ and $A = 0, ~B = 0, ~C = 1$ to see C's treatment effect; i.e. how it changes the predicted result when all other variables are held constant. Then, to see how the effect changes for A and B, we need to compare $A = 0, ~B = 0,~ C = 1$ versus $A = 1,~ B = 0,~ C = 1$; likewise for B, we need to compare $ A = 0, ~B = 0, ~C = 1$ to $A = 0,~ B = 1,~ C = 1$. Assuming that our treatment groups from **(b)** had level $C = 0$, then this introduces 3 new groups. That gives us 7 treatment groups to estimate the interaction effects described.
 
-> A full factorial design would also include a three-way interaction effect, getting us $7 + 1 = 2^3$ groups, each group getting 25 units through random assignment. While a three-way interaction effect was not mentioned in the prompt, we also don't have reasonable certainty to assume that interaction effect to be zero. So, if we did a partial factorial design, we would be makiing the dubious assumption that there is no three-way interaction effect, and we would also be missing the interactions between $C$ and $A$ or $B$, or we would be missing treatment effects.
+> A full factorial design would also include a three-way interaction effect, getting us $7 + 1 = 2^3$ groups, each group getting 25 units through random assignment. While a three-way interaction effect was not mentioned in the prompt, we also don't have reasonable certainty to assume that interaction effect to be zero. So, if we did a fractional factorial design, we would be makiing the dubious assumption that there is no three-way interaction effect, and we would also be missing the interactions between $C$ and $A$ or $B$, or we would be missing treatment effects.
+
+## d. 
+
+> To consider treatment and interaction effects with C, we assume:
+
+$$
+Y_i = \beta_0 + \beta_1A_i + \beta_2B_i + \beta_3AB_i + \beta_4C_i + \beta_5AC_i + \beta_6 BC_i + \beta_7ABC_i + \epsilon_i
+$$
+
+> With the assistant's proposed fractional factorial design, we can estimate $\bar{Y}(A = 1, B = 0, C = 0)$, $\bar{Y}(A = 0, B = 1, C = 0)$, $\bar{Y}(A = 0, B = 0, C = 1)$, and $\bar{Y}(A = 1, B = 1, C = 1)$ to estimate $\beta_1$, $\beta_2$, $\beta_4$, and $\beta_7$.
+
+> However, recall that the population averages gave us $\beta_0$, $\beta_1$ (treatment effect of a), $\beta_2$ (treatment effect of b), and $\beta_3$ (interaction effect between A and B). Therefore, in this fractional design, the interaction effect between A and B is aliased with the treatment effect of C. Therefore, we can't estimate the treatment effect of C. 
+
+## e. 
+
+> The design from part **(d)** assumes that the regression coefficients that it can't estimate (the experiment results can't estimate $\beta_0, \beta_3, \beta_5, \beta_6$) to be 0. This includes the interaction effect between A and B, $\beta_3$. So, if we assume $\beta_3=0$:
+
+$$
+\begin{aligned}
+\bar{Y}(A = 1, B = 1) = \beta_0 + \beta_1 + \beta_2 + \beta_3 \\
+= 1 + 4 + 3 + 0 \\
+= 8
+\end{aligned}
+$$
+
+> Therefore, to estimate treatment effect of C, we would require $\bar{Y}(A = 1, B = 1) = 8$.
+
+# 2. 
+
+Run `FourFactorAnalysis.R`:
+
+```{r}
+#| echo: TRUE
+#| error: FALSE
+
+source("FourFactorAnalysis.R")
+```
+
+## a.
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+
+pairwise_lm = lm(y ~ a + b + c + d + a*b + a*c + a*d + b*c + b*d + c*d, data = thedata)
+
+coeff_pop = c("Intercept" = trt0, "A" = trta, "B" = trtb, "C" = trtc, "D" = trtd, "AB" = trtab, "AC" = trtac, "AD" = trtad, "BC" = trtbc, "BD" = trtbd, "CD" = trtcd, "ABC" = trtabc, "BCD" = trtbcd, "ACD" = trtacd, "ABD" = trtabd, "ABCD" = trtabcd)
+tibble(
+  coefficient = names(coeff_pop)[-(12:16)],
+  estimate = unname(pairwise_lm$coefficients),
+  pop_value = unname(coeff_pop)[-(12:16)]
+) |> kable(digits = 3)
+
+```
+> Looking at the outputs for the regression and for the true coefficients side by side, we can see that they are very similar (tend to only be off by $\approx \pm 0.3$ at most).
+
+## b.
+
+> Our coefficient for the interaction effect between B and C is $\approx 6.102$. We also have expected coefficients for just B and just C. So, if an individual gets treatments B and C and we have **no** interaction effect, the result is expected to change by the amounts denoted in the treatment coefficients for B and C, holding all else constant. However, with an interaction effect, the results for an individual who gets both treatments B and C is expected to change by an additional +6.102. Note that this interaction effect is zero if an individual doesn't get treatment B and/or doesn't get treatment C; it only is nonzero for an individual who recieved both treatments.
+
+## c. 
+
+```{r}
+lm_3c = lm(y ~ a + b + c + d + a*b + a*c + a*d + b*c + b*d + c*d + a*b*c + b*c*d + a*c*d + a*b*d, data = thedata)
+
+tibble(
+  coefficient = names(coeff_pop)[-16],
+  estimate = unname(lm_3c$coefficients),
+  p_value = summary(lm_3c)$coefficients[, "Pr(>|t|)"] |> unname(),
+  pop_value = unname(coeff_pop)[-16]
+) |> kable(digits = 3)
+
+#nested f test
+
+anova(pairwise_lm, lm_3c)
+```
+
+
 
